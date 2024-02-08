@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-database-compat.js"></script>
+</head>
+<body>
+    <div id="animation-container">
+        <video id="videoPlayer" src="mrbean.mp4" loop></video>
+    </div>
+    <button id="play-btn">Play</button>
+    <button id="pause-btn">Pause</button>
+
+    <!-- JavaScript -->
+    <script>   
+    document.addEventListener('DOMContentLoaded', function() {
+    const firebaseConfig = {
+        apiKey: "AIzaSyBUuJ6gVPf3hv-s57iomM1L9MO4VdypNYQ",
+  authDomain: "mr-been-2cfdb.firebaseapp.com",
+  projectId: "mr-been-2cfdb",
+  storageBucket: "mr-been-2cfdb.appspot.com",
+  messagingSenderId: "1007861840918",
+  appId: "1:1007861840918:web:da68a1e06ac6e8e4690937"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+// Reference to your Firebase database
+const dbRef = firebase.database().ref('videoControl');
+
+// Reference to the video player
+const videoPlayer = document.getElementById('videoPlayer');
+
+// Play button
+const playBtn = document.getElementById('play-btn');
+playBtn.addEventListener('click', () => {
+    // Send data to Firebase to play the video
+    dbRef.set({ status: 'play' });
+    // Play the video after a user interaction
+    videoPlayer.play().catch(function(error) {
+        console.error('Video play error:', error);
+    });
+});
+
+// Pause button
+const pauseBtn = document.getElementById('pause-btn');
+pauseBtn.addEventListener('click', () => {
+    // Send data to Firebase to pause the video
+    dbRef.set({ status: 'pause' });
+    // Pause the video after a user interaction
+    videoPlayer.pause();
+});
+
+// Firebase listener to control video playback
+dbRef.on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (data.status === 'play') {
+        // Play the video after a user interaction
+        videoPlayer.play().catch(function(error) {
+            console.error('Video play error:', error);
+        });
+    } else if (data.status === 'pause') {
+        // Pause the video
+        videoPlayer.pause();
+    }
+});
+});
+    </script>
+   
+</body>
+</html>
