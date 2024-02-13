@@ -64,8 +64,8 @@ pauseBtn.addEventListener('click', () => {
      dbRef.set({ status: 'wait' });
 
      // Dynamically adjust the size of the video when the wait button is clicked
-     videoPlayer.style.width = '800px'; // Adjust the width as needed
-     videoPlayer.style.height = '600px'; // Adjust the height as needed
+     // videoPlayer.style.width = '800px'; // Adjust the width as needed
+     // videoPlayer.style.height = '600px'; // Adjust the height as needed
  });
 
 // Firebase listener to control video playback
@@ -89,8 +89,8 @@ dbRef.on('value', (snapshot) => {
             console.error('Video play error:', error);
         });
         // Adjust the size of the video when playing the wait video
-    videoPlayer.style.width = '800px'; // Adjust the width as needed
-    videoPlayer.style.height = '600px'; // Adjust the height as needed
+    // videoPlayer.style.width = '800px'; // Adjust the width as needed
+    // videoPlayer.style.height = '600px'; // Adjust the height as needed
     }
     
 });
