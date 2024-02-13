@@ -15,6 +15,7 @@
     </div>
     <button id="play-btn">Play</button>
     <button id="pause-btn">Pause</button>
+    <button id="wait-btn">Wait</button>
 
     <!-- JavaScript -->
     <script>   
@@ -56,18 +57,42 @@ pauseBtn.addEventListener('click', () => {
     videoPlayer.pause();
 });
 
+ // Wait button
+ const waitBtn = document.getElementById('wait-btn');
+ waitBtn.addEventListener('click', () => {
+     // Send data to Firebase to change the video source
+     dbRef.set({ status: 'wait' });
+
+     // Dynamically adjust the size of the video when the wait button is clicked
+     videoPlayer.style.width = '800px'; // Adjust the width as needed
+     videoPlayer.style.height = '600px'; // Adjust the height as needed
+ });
+
 // Firebase listener to control video playback
 dbRef.on('value', (snapshot) => {
     const data = snapshot.val();
     if (data.status === 'play') {
-        // Play the video after a user interaction
-        videoPlayer.play().catch(function(error) {
-            console.error('Video play error:', error);
-        });
+       // Set the original video source
+       videoPlayer.src = 'mrbean.mp4';
+       // Play the original video
+       videoPlayer.play().catch(function(error) {
+           console.error('Video play error:', error);
+       });
     } else if (data.status === 'pause') {
         // Pause the video
         videoPlayer.pause();
+    } else if (data.status === 'wait') {
+        // Change the video source based on your logic
+        videoPlayer.src = 'wait.mp4';
+        // Play the new video
+        videoPlayer.play().catch(function(error) {
+            console.error('Video play error:', error);
+        });
+        // Adjust the size of the video when playing the wait video
+    videoPlayer.style.width = '800px'; // Adjust the width as needed
+    videoPlayer.style.height = '600px'; // Adjust the height as needed
     }
+    
 });
 });
     </script>
